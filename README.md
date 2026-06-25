@@ -89,6 +89,22 @@ The smoke test installs the bundle into a clean image and runs:
 - false-success blocking
 - repeated-replan loop guard
 
+## Real integration smoke test
+
+Use this only on a Linux machine that already has a working `claude` CLI and an already-running Claude Code Router.
+
+This test does not install Claude, does not install router, and does not rewrite router model settings.
+
+```bash
+bash ./scripts/smoke_real_claude_router_integration.sh
+```
+
+Optional:
+- pass a custom project root as the first argument
+- pass a custom task as the second argument
+- set `CCR_HEALTH_URL` if your router health endpoint is not `http://127.0.0.1:3456/health`
+- set `ALLOW_AUTOSTART=1` together with `START_CCR_BIN=/your/existing/router-start-command` if you explicitly want the script to start your already-configured router command
+
 ## Mock validation scripts
 
 - `scripts/evaluate_claude_single_file.sh`
