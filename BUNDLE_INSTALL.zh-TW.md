@@ -54,6 +54,26 @@ bash ./scripts/smoke_bundle_in_fresh_image.sh
 3. 跑多輪與錯誤恢復測試
 4. 確認 child cap、安全清理、timeout、overflow、replan loop guard 都能工作
 
+## 真實 Claude/router 整合驗證
+
+如果你的 Linux 機器已經有可用的 `claude` 與既有 router，可再跑：
+
+```bash
+bash ./scripts/smoke_real_claude_router_integration.sh
+```
+
+這支腳本會：
+1. 檢查 `claude`、`bash`、`python3`、`jq`、`curl`
+2. 檢查既有 router health endpoint
+3. 跑一個最小的 `main Claude/router -> child Claude/router` edit flow
+4. 驗證是否真的有 child 執行，且有實際檔案變更
+
+它不會：
+- 安裝 Claude Code
+- 安裝 router
+- 覆寫 router config
+- 修改 model 設定
+
 ## 建議公開內容
 
 若要上傳到 GitHub，只公開：
