@@ -10,3 +10,5 @@ processes/
 *.before.json
 *.after.json
 *.test.txt
+__pycache__/
+*.pyc
