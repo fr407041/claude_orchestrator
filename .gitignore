@@ -12,3 +12,4 @@ processes/
 *.test.txt
 __pycache__/
 *.pyc
+dist/
