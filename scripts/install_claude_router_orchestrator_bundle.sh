@@ -20,6 +20,14 @@ copy_file() {
   cp "$src" "$dst"
 }
 
+copy_optional_file() {
+  local src="${1:?src required}"
+  local dst="${2:?dst required}"
+  if [[ -f "$src" ]]; then
+    copy_file "$src" "$dst"
+  fi
+}
+
 copy_tree() {
   local src="${1:?src required}"
   local dst="${2:?dst required}"
@@ -27,21 +35,29 @@ copy_tree() {
   cp -R "${src}/." "$dst/"
 }
 
+copy_optional_tree() {
+  local src="${1:?src required}"
+  local dst="${2:?dst required}"
+  if [[ -d "$src" ]]; then
+    copy_tree "$src" "$dst"
+  fi
+}
+
 copy_file "${REPO_ROOT}/README.md" "${TARGET_ROOT}/README.md"
-copy_file "${REPO_ROOT}/README.zh-TW.md" "${TARGET_ROOT}/README.zh-TW.md"
-copy_file "${REPO_ROOT}/BUNDLE_INSTALL.zh-TW.md" "${TARGET_ROOT}/BUNDLE_INSTALL.zh-TW.md"
-copy_file "${REPO_ROOT}/COMPANY_CLAUDE_ROUTER_QUICKSTART.zh-TW.md" "${TARGET_ROOT}/COMPANY_CLAUDE_ROUTER_QUICKSTART.zh-TW.md"
-copy_file "${REPO_ROOT}/CLAUDE_ROUTER_PURE_MODE_SPEC.zh-TW.md" "${TARGET_ROOT}/CLAUDE_ROUTER_PURE_MODE_SPEC.zh-TW.md"
-copy_file "${REPO_ROOT}/COMPANY_TEST_MATRIX.zh-TW.md" "${TARGET_ROOT}/COMPANY_TEST_MATRIX.zh-TW.md"
-copy_file "${REPO_ROOT}/PRODUCT_GRADE_ADOPTION_CHECKLIST.zh-TW.md" "${TARGET_ROOT}/PRODUCT_GRADE_ADOPTION_CHECKLIST.zh-TW.md"
-copy_file "${REPO_ROOT}/RLS_PRODUCTION_TEST_PLAN.zh-TW.md" "${TARGET_ROOT}/RLS_PRODUCTION_TEST_PLAN.zh-TW.md"
-copy_file "${REPO_ROOT}/TEST_RESULTS_2026-06-27.zh-TW.md" "${TARGET_ROOT}/TEST_RESULTS_2026-06-27.zh-TW.md"
-copy_file "${REPO_ROOT}/SAFE_PUBLISHING.md" "${TARGET_ROOT}/SAFE_PUBLISHING.md"
-copy_file "${REPO_ROOT}/profiles/orchestrator-limits.env" "${TARGET_ROOT}/profiles/orchestrator-limits.env"
-copy_file "${REPO_ROOT}/profiles/preset-conservative.env" "${TARGET_ROOT}/profiles/preset-conservative.env"
-copy_file "${REPO_ROOT}/profiles/preset-fast.env" "${TARGET_ROOT}/profiles/preset-fast.env"
-copy_file "${REPO_ROOT}/profiles/preset-large-project-safe.env" "${TARGET_ROOT}/profiles/preset-large-project-safe.env"
-copy_file "${REPO_ROOT}/profiles/kimi-k2-router-production.env" "${TARGET_ROOT}/profiles/kimi-k2-router-production.env"
+copy_optional_file "${REPO_ROOT}/README.zh-TW.md" "${TARGET_ROOT}/README.zh-TW.md"
+copy_optional_file "${REPO_ROOT}/BUNDLE_INSTALL.zh-TW.md" "${TARGET_ROOT}/BUNDLE_INSTALL.zh-TW.md"
+copy_optional_file "${REPO_ROOT}/COMPANY_CLAUDE_ROUTER_QUICKSTART.zh-TW.md" "${TARGET_ROOT}/COMPANY_CLAUDE_ROUTER_QUICKSTART.zh-TW.md"
+copy_optional_file "${REPO_ROOT}/CLAUDE_ROUTER_PURE_MODE_SPEC.zh-TW.md" "${TARGET_ROOT}/CLAUDE_ROUTER_PURE_MODE_SPEC.zh-TW.md"
+copy_optional_file "${REPO_ROOT}/COMPANY_TEST_MATRIX.zh-TW.md" "${TARGET_ROOT}/COMPANY_TEST_MATRIX.zh-TW.md"
+copy_optional_file "${REPO_ROOT}/PRODUCT_GRADE_ADOPTION_CHECKLIST.zh-TW.md" "${TARGET_ROOT}/PRODUCT_GRADE_ADOPTION_CHECKLIST.zh-TW.md"
+copy_optional_file "${REPO_ROOT}/RLS_PRODUCTION_TEST_PLAN.zh-TW.md" "${TARGET_ROOT}/RLS_PRODUCTION_TEST_PLAN.zh-TW.md"
+copy_optional_file "${REPO_ROOT}/TEST_RESULTS_2026-06-27.zh-TW.md" "${TARGET_ROOT}/TEST_RESULTS_2026-06-27.zh-TW.md"
+copy_optional_file "${REPO_ROOT}/SAFE_PUBLISHING.md" "${TARGET_ROOT}/SAFE_PUBLISHING.md"
+copy_optional_file "${REPO_ROOT}/profiles/orchestrator-limits.env" "${TARGET_ROOT}/profiles/orchestrator-limits.env"
+copy_optional_file "${REPO_ROOT}/profiles/preset-conservative.env" "${TARGET_ROOT}/profiles/preset-conservative.env"
+copy_optional_file "${REPO_ROOT}/profiles/preset-fast.env" "${TARGET_ROOT}/profiles/preset-fast.env"
+copy_optional_file "${REPO_ROOT}/profiles/preset-large-project-safe.env" "${TARGET_ROOT}/profiles/preset-large-project-safe.env"
+copy_optional_file "${REPO_ROOT}/profiles/kimi-k2-router-production.env" "${TARGET_ROOT}/profiles/kimi-k2-router-production.env"
 
 for file in \
   claude_router_common.sh \
@@ -87,12 +103,12 @@ for file in \
   worker_claude_router.sh \
   worker_claude_router_managed_single_file.sh
 do
-  copy_file "${REPO_ROOT}/scripts/${file}" "${TARGET_ROOT}/scripts/${file}"
+  copy_optional_file "${REPO_ROOT}/scripts/${file}" "${TARGET_ROOT}/scripts/${file}"
 done
 
-copy_tree "${REPO_ROOT}/examples/hello-python" "${TARGET_ROOT}/examples/hello-python"
-copy_tree "${REPO_ROOT}/examples/multi-file-python" "${TARGET_ROOT}/examples/multi-file-python"
-copy_tree "${REPO_ROOT}/docker/claude-router-bundle-test" "${TARGET_ROOT}/docker/claude-router-bundle-test"
+copy_optional_tree "${REPO_ROOT}/examples/hello-python" "${TARGET_ROOT}/examples/hello-python"
+copy_optional_tree "${REPO_ROOT}/examples/multi-file-python" "${TARGET_ROOT}/examples/multi-file-python"
+copy_optional_tree "${REPO_ROOT}/docker/claude-router-bundle-test" "${TARGET_ROOT}/docker/claude-router-bundle-test"
 
 chmod +x "${TARGET_ROOT}/scripts/"*.sh
 
