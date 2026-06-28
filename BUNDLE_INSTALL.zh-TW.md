@@ -1,23 +1,21 @@
-# Claude Router Orchestrator 懶人包
+# Claude Router Orchestrator 安裝說明
 
-這份懶人包只處理 `Claude Code + router -> child Claude Code + router` 的 orchestration 架構。
+這份文件只說明如何把 orchestration bundle 安裝到目標 Linux 主機。
 
-刻意不包含：
-- Claude Code 安裝流程
-- Claude Code Router 安裝流程
-- 開源模型選擇流程
-- router model 設定修改
+不處理：
+- Claude Code 安裝
+- Claude Code Router 安裝
+- router model 設定
+- 開源模型部署
 
-## 前置假設
+## 前置條件
 
-目標機器或目標 image 已經具備：
+目標主機需要已經有：
 - `bash`
 - `python3`
 - `jq`
 - `claude`
-- `ccr` 或等價 router 啟動方式
-
-如果只是先驗證 orchestration 邏輯，可直接使用內建 mock runner，不需要真實 Claude/router 服務。
+- 已可工作的 Claude Code Router
 
 ## 一鍵安裝
 
@@ -25,12 +23,13 @@
 bash ./scripts/install_claude_router_orchestrator_bundle.sh /opt/claude_orchestrator
 ```
 
-安裝完成後，重點路徑如下：
+安裝後會建立：
 - `/opt/claude_orchestrator/scripts`
+- `/opt/claude_orchestrator/profiles`
 - `/opt/claude_orchestrator/examples`
 - `/opt/claude_orchestrator/docker/claude-router-bundle-test`
 
-## 最小啟動
+## 最小驗證
 
 ```bash
 cd /opt/claude_orchestrator
@@ -39,49 +38,51 @@ bash ./scripts/orchestrate_claude_to_claude.sh \
   ./examples/hello-python
 ```
 
-## 新 image smoke test
+## Docker smoke test
 
-如果要在新的 Ubuntu Docker image 驗證整包可用：
+如果你要先驗證 bundle 本身，而不是直接打真 router，先跑：
 
 ```bash
-cd /opt/codex-claude-server-playbook
 bash ./scripts/smoke_bundle_in_fresh_image.sh
 ```
 
-這個 smoke test 會：
-1. 建立新的 Ubuntu image
-2. 在 image 內安裝這份懶人包
-3. 跑多輪與錯誤恢復測試
-4. 確認 child cap、安全清理、timeout、overflow、replan loop guard 都能工作
+這會在乾淨 Ubuntu image 裡驗證：
+- install flow
+- child 上限
+- overflow recovery
+- timeout recovery
+- false-success guard
+- replan loop guard
 
-## 真實 Claude/router 整合驗證
+## 真實 router smoke test
 
-如果你的 Linux 機器已經有可用的 `claude` 與既有 router，可再跑：
+如果目標機器上的 `claude` 與 router 已經可用，再跑：
 
 ```bash
 bash ./scripts/smoke_real_claude_router_integration.sh
 ```
 
-這支腳本會：
-1. 檢查 `claude`、`bash`、`python3`、`jq`、`curl`
-2. 檢查既有 router health endpoint
-3. 跑一個最小的 `main Claude/router -> child Claude/router` edit flow
-4. 驗證是否真的有 child 執行，且有實際檔案變更
+如果 `claude` 不在 `PATH`：
 
-它不會：
-- 安裝 Claude Code
-- 安裝 router
-- 覆寫 router config
-- 修改 model 設定
+```bash
+CLAUDE_BIN=/absolute/path/to/claude \
+bash ./scripts/smoke_real_claude_router_integration.sh
+```
 
-## 建議公開內容
+## 公司建議驗證順序
 
-若要上傳到 GitHub，只公開：
-- orchestration scripts
-- mock 測試與 examples
-- 本懶人包說明
+1. `bash ./scripts/smoke_bundle_in_fresh_image.sh`
+2. `bash ./scripts/smoke_real_claude_router_integration.sh`
+3. `bash ./scripts/evaluate_claude_product_grade_matrix.sh`
+4. `bash ./scripts/evaluate_claude_rls_production_matrix.sh`
 
-不要公開：
-- 個人 token
-- 公司內部 router 設定
-- 實際 model endpoint
+## 交付給同事前建議
+
+如果你要把這份 repo 打成 zip 再交給同事：
+
+```bash
+bash ./scripts/package_publish_bundle.sh
+```
+
+輸出位置：
+- `dist/claude-router-orchestrator-bundle-<timestamp>.zip`
