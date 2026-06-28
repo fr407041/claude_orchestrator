@@ -1,8 +1,9 @@
 # Claude Router Orchestrator
 
-This repository focuses only on the `Claude Code + router -> child Claude Code + router` orchestration pattern.
+This repository focuses on one scope only:
+- `Claude Code + router -> child Claude Code + router` orchestration
 
-It is designed to reduce token overflow risk by forcing narrow child jobs, limiting child creation, and recovering from bad worker behavior without killing the main orchestrator.
+It is intended to reduce rollout risk for company use by forcing narrower child jobs, limiting child creation, and recovering from common failure modes without killing the main orchestrator.
 
 ## Scope
 
@@ -16,7 +17,9 @@ Included:
 - false-success blocking
 - repeated-replan loop guard
 - Linux one-click bundle installer
+- publishable zip bundle packaging
 - fresh Ubuntu Docker image smoke test
+- stricter release-style validation matrix
 
 Excluded on purpose:
 - Claude Code installation flow
@@ -24,31 +27,28 @@ Excluded on purpose:
 - router model setting changes
 - open-source model selection flow
 
+## Key docs
+
+For company-facing onboarding and rollout:
+- `README.zh-TW.md`
+- `COMPANY_CLAUDE_ROUTER_QUICKSTART.zh-TW.md`
+- `BUNDLE_INSTALL.zh-TW.md`
+- `PRODUCT_GRADE_ADOPTION_CHECKLIST.zh-TW.md`
+- `RLS_PRODUCTION_TEST_PLAN.zh-TW.md`
+- `SAFE_PUBLISHING.md`
+
 ## Core scripts
 
 - `scripts/orchestrate_claude_to_claude.sh`
 - `scripts/run_claude_guarded.sh`
 - `scripts/worker_claude_router.sh`
 - `scripts/worker_claude_router_managed_single_file.sh`
-- `scripts/claude_router_common.sh`
-- `scripts/cleanup_claude_children.sh`
-
-## Failure handling
-
-- Overflow on multi-file child jobs:
-  split into smaller retry jobs
-- Too many child processes:
-  block new child creation with `CLAUDE_MAX_CHILDREN`
-- Broken child cleanup:
-  cleanup only targets `child_*` registry entries and skips the main process
-- Child timeout:
-  watchdog terminates the child and lets the main orchestrator rewrite or stop safely
-- Child says `SUCCESS` but changed nothing:
-  worker downgrades the result to `FAILED`
-- Child keeps asking for replan:
-  main triggers `replan_loop_guard_hit` instead of infinite redispatch
-- Planner returns bad JSON:
-  main falls back to deterministic small-batch planning
+- `scripts/install_claude_router_orchestrator_bundle.sh`
+- `scripts/package_publish_bundle.sh`
+- `scripts/smoke_bundle_in_fresh_image.sh`
+- `scripts/smoke_real_claude_router_integration.sh`
+- `scripts/evaluate_claude_product_grade_matrix.sh`
+- `scripts/evaluate_claude_rls_production_matrix.sh`
 
 ## Linux bundle install
 
@@ -70,58 +70,29 @@ bash ./scripts/orchestrate_claude_to_claude.sh \
   ./examples/hello-python
 ```
 
-## Fresh-image smoke test
-
-Build and validate the bundle in a fresh Ubuntu image:
+## Package a publishable zip bundle
 
 ```bash
-bash ./scripts/smoke_bundle_in_fresh_image.sh
+bash ./scripts/package_publish_bundle.sh
 ```
 
-The smoke test installs the bundle into a clean image and runs:
-- single-file managed edit
-- multi-round overflow recovery
-- child limit protection
-- fail-replan recovery
-- timeout recovery
-- bad planner fallback
-- needs-replan recovery
-- false-success blocking
-- repeated-replan loop guard
+Output:
+- `dist/claude-router-orchestrator-bundle-<timestamp>.zip`
 
-## Real integration smoke test
+## Validation order
 
-Use this only on a Linux machine that already has a working `claude` CLI and an already-running Claude Code Router.
+1. `bash ./scripts/smoke_bundle_in_fresh_image.sh`
+2. `bash ./scripts/smoke_real_claude_router_integration.sh`
+3. `bash ./scripts/evaluate_claude_product_grade_matrix.sh`
+4. `bash ./scripts/evaluate_claude_rls_production_matrix.sh`
 
-This test does not install Claude, does not install router, and does not rewrite router model settings.
+## Positioning
 
-```bash
-bash ./scripts/smoke_real_claude_router_integration.sh
-```
+This repository does not claim that every company router configuration will work unchanged.
 
-Optional:
-- pass a custom project root as the first argument
-- pass a custom task as the second argument
-- set `CCR_HEALTH_URL` if your router health endpoint is not `http://127.0.0.1:3456/health`
-- set `ALLOW_AUTOSTART=1` together with `START_CCR_BIN=/your/existing/router-start-command` if you explicitly want the script to start your already-configured router command
-
-## Mock validation scripts
-
-- `scripts/evaluate_claude_single_file.sh`
-- `scripts/evaluate_claude_multi_round.sh`
-- `scripts/evaluate_claude_child_limits.sh`
-- `scripts/evaluate_claude_fail_replan.sh`
-- `scripts/evaluate_claude_timeout_recovery.sh`
-- `scripts/evaluate_claude_bad_planner.sh`
-- `scripts/evaluate_claude_needs_replan.sh`
-- `scripts/evaluate_claude_false_success_guard.sh`
-- `scripts/evaluate_claude_replan_loop_guard.sh`
-
-## Verified on 2026-06-25
-
-Fresh Ubuntu Docker image validation completed for the Linux bundle with:
-- successful bundle install into a new path
-- multi-round mock orchestration execution
-- bounded child creation
-- safe child cleanup without killing main
-- recovery from overflow, timeout, failure, false success, and repeated replan cases
+What it does provide is:
+- enforced narrow job planning
+- bounded overflow recovery
+- bounded router recovery
+- loop-stop guards for repeated failures
+- a Docker-runnable validation matrix that can be re-run before rollout
