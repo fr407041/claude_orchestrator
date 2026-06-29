@@ -8,7 +8,6 @@ Related design docs:
 - `CLAUDE_ROUTER_PURE_MODE_SPEC.zh-TW.md`
 - `COMPANY_TEST_MATRIX.zh-TW.md`
 - `TEST_RESULTS_2026-06-27.zh-TW.md`
-- `TEST_RESULTS_2026-06-27_STRESS.zh-TW.md`
 
 Central limits file:
 - `profiles/orchestrator-limits.env`
@@ -204,9 +203,6 @@ bash ./scripts/orchestrate_claude_to_claude.sh \
   "Edit tests/test_placeholder.py so it contains a deterministic assertion assert 1 + 1 == 2 and keep the file minimal." \
   ./examples/hello-python
 ```
-
-See also:
-- `docs/RPI_DEPLOYMENT.zh-TW.md`
 
 ## Mock validation scripts
 
