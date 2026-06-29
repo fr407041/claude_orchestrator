@@ -55,6 +55,8 @@ bash ./scripts/orchestrate_claude_to_claude.sh \
   ./examples/hello-python
 ```
 
+Note: `tests/test_placeholder.py` is relative to the target repo root `./examples/hello-python`, not the top-level repository root.
+
 ## 先看哪份文件
 
 如果你要快速交付給公司內部同事，先看：
@@ -78,6 +80,8 @@ bash ./scripts/package_publish_bundle.sh
 
 輸出檔案位置：
 - `dist/claude-router-orchestrator-bundle-<timestamp>.zip`
+
+Note: `<timestamp>` is a generated runtime value, so this path is an output naming pattern rather than a checked-in repository file.
 
 ## 測試建議順序
 
