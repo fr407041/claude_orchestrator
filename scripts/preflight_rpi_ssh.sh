@@ -6,7 +6,7 @@ source "${SCRIPT_DIR}/rpi_ssh_common.sh"
 
 RPI_PREFLIGHT_JSON="${RPI_PREFLIGHT_JSON:-0}"
 
-remote_report="$ (
+remote_report="$(
   rpi_ssh bash -lc "python3 - <<'PY'
 import json
 import os
