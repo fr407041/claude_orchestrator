@@ -51,6 +51,7 @@ copy_optional_file "${REPO_ROOT}/CLAUDE_ROUTER_PURE_MODE_SPEC.zh-TW.md" "${TARGE
 copy_optional_file "${REPO_ROOT}/COMPANY_TEST_MATRIX.zh-TW.md" "${TARGET_ROOT}/COMPANY_TEST_MATRIX.zh-TW.md"
 copy_optional_file "${REPO_ROOT}/PRODUCT_GRADE_ADOPTION_CHECKLIST.zh-TW.md" "${TARGET_ROOT}/PRODUCT_GRADE_ADOPTION_CHECKLIST.zh-TW.md"
 copy_optional_file "${REPO_ROOT}/RLS_PRODUCTION_TEST_PLAN.zh-TW.md" "${TARGET_ROOT}/RLS_PRODUCTION_TEST_PLAN.zh-TW.md"
+copy_optional_file "${REPO_ROOT}/KIMI_K2_ULTRA_SAFE_USAGE.zh-TW.md" "${TARGET_ROOT}/KIMI_K2_ULTRA_SAFE_USAGE.zh-TW.md"
 copy_optional_file "${REPO_ROOT}/TEST_RESULTS_2026-06-27.zh-TW.md" "${TARGET_ROOT}/TEST_RESULTS_2026-06-27.zh-TW.md"
 copy_optional_file "${REPO_ROOT}/SAFE_PUBLISHING.md" "${TARGET_ROOT}/SAFE_PUBLISHING.md"
 copy_optional_file "${REPO_ROOT}/profiles/orchestrator-limits.env" "${TARGET_ROOT}/profiles/orchestrator-limits.env"
@@ -58,6 +59,7 @@ copy_optional_file "${REPO_ROOT}/profiles/preset-conservative.env" "${TARGET_ROO
 copy_optional_file "${REPO_ROOT}/profiles/preset-fast.env" "${TARGET_ROOT}/profiles/preset-fast.env"
 copy_optional_file "${REPO_ROOT}/profiles/preset-large-project-safe.env" "${TARGET_ROOT}/profiles/preset-large-project-safe.env"
 copy_optional_file "${REPO_ROOT}/profiles/kimi-k2-router-production.env" "${TARGET_ROOT}/profiles/kimi-k2-router-production.env"
+copy_optional_file "${REPO_ROOT}/profiles/kimi-k2-router-ultra-safe.env" "${TARGET_ROOT}/profiles/kimi-k2-router-ultra-safe.env"
 
 for file in \
   claude_router_common.sh \
@@ -121,9 +123,9 @@ Included:
 - child process cap and safe cleanup helpers
 - mock-based multi-round evaluation scripts
 - centralized limits file at profiles/orchestrator-limits.env
-- preset profiles for conservative, fast, large-project-safe, and Kimi-K2 conservative modes
+- preset profiles for conservative, fast, large-project-safe, Kimi-K2 conservative, and Kimi-K2 ultra-safe modes
 - fresh Docker image smoke test assets
-- company-facing Chinese quickstart and release test docs
+- company-facing Chinese quickstart, ultra-safe guidance, and release test docs
 
 Excluded on purpose:
 - Claude Code installation flow
