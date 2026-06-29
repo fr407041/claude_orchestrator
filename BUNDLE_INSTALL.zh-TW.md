@@ -38,6 +38,8 @@ bash ./scripts/orchestrate_claude_to_claude.sh \
   ./examples/hello-python
 ```
 
+Note: `tests/test_placeholder.py` is relative to the target repo root `./examples/hello-python`, not the top-level repository root.
+
 ## Docker smoke test
 
 如果你要先驗證 bundle 本身，而不是直接打真 router，先跑：
@@ -86,3 +88,5 @@ bash ./scripts/package_publish_bundle.sh
 
 輸出位置：
 - `dist/claude-router-orchestrator-bundle-<timestamp>.zip`
+
+Note: `<timestamp>` is a generated runtime value, so this path is an output naming pattern rather than a checked-in repository file.
