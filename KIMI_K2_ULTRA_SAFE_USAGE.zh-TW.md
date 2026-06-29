@@ -54,7 +54,7 @@ bash ./scripts/orchestrate_claude_to_claude.sh \
 
 ## 推薦操作順序
 
-1. 先套用 `kimi-k2-router-ultra-safe.env`
+1. 先套用 `profiles/kimi-k2-router-ultra-safe.env`
 2. 再把 router 的 `max_tokens` 降到 `2048` 或 `4096`
 3. 每跑完一批 repo，就重新開新 session
 4. 不要讓 subagent 自由讀整個資料夾
