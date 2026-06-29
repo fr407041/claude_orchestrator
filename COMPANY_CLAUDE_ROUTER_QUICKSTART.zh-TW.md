@@ -38,6 +38,8 @@ bash ./scripts/orchestrate_claude_to_claude.sh \
   ./examples/hello-python
 ```
 
+Note: `tests/test_placeholder.py` is relative to the target repo root `./examples/hello-python`, not the top-level repository root.
+
 ## 建議驗證順序
 
 1. `bash ./scripts/smoke_bundle_in_fresh_image.sh`
@@ -59,3 +61,5 @@ bash ./scripts/package_publish_bundle.sh
 
 輸出會放在：
 - `dist/claude-router-orchestrator-bundle-<timestamp>.zip`
+
+Note: `<timestamp>` is a generated runtime value, so this path is an output naming pattern rather than a checked-in repository file.
