@@ -84,6 +84,8 @@ bash ./scripts/orchestrate_claude_to_claude.sh \
   ./examples/hello-python
 ```
 
+Note: `tests/test_placeholder.py` is relative to the target repo root `./examples/hello-python`, not the top-level repository root.
+
 Package a publishable zip bundle:
 
 ```bash
